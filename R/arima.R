@@ -331,6 +331,10 @@ forecast.Arima <- function(object, h=ifelse(object$arma[5] > 1, 2 * object$arma[
     if (NCOL(xreg) != NCOL(object$call$xreg)) {
       stop("Number of regressors does not match fitted model")
     }
+    if(!is.matrix(object$call$xreg)){
+      ## predict.Arima cannot handle dataframes properly .
+      object$call$xreg <- as.matrix(object$call$xreg)
+    }
     pred <- predict(object, n.ahead = h, newxreg = xreg)
   }
   else {
